@@ -392,6 +392,7 @@
 - [x] 25. Checkpoint - Ensure all tests pass
 
 
+
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ]* 26. Property-based test generators

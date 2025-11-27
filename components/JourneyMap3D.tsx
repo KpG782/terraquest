@@ -2,8 +2,8 @@
 
 import { Suspense, useState, useEffect } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import { ErrorBoundary } from './ErrorBoundary';
+import { BoundedOrbitControls } from './BoundedOrbitControls';
 import { Scene } from './Scene';
 import { RegionMesh } from './RegionMesh';
 import { PathLine } from './PathLine';
@@ -12,6 +12,9 @@ import { CameraController } from './CameraController';
 import { GlassmorphismCard } from './GlassmorphismCard';
 import { ProgressBar } from './ProgressBar';
 import { AchievementBadges } from './AchievementBadges';
+import { ControlsHint } from './ControlsHint';
+import { MiniMap } from './MiniMap';
+import { BoundaryIndicator } from './BoundaryIndicator';
 import { MODULES, getUnlockedModules, getModuleById } from '@/lib/modules';
 import { useProgressStore } from '@/lib/store';
 import { worldToScreen } from '@/lib/coordinate-transform';
@@ -28,6 +31,7 @@ export default function JourneyMap3D({ initialModule }: JourneyMap3DProps) {
   const [targetModule, setTargetModule] = useState<Module | null>(null);
   const [hoveredModule, setHoveredModule] = useState<string | null>(null);
   const [controlsEnabled, setControlsEnabled] = useState(true);
+  const [boundaryDirection, setBoundaryDirection] = useState<'north' | 'south' | 'east' | 'west' | null>(null);
   
   const breakpoint = useResponsive();
   const config = getResponsiveConfig(breakpoint);
@@ -44,7 +48,8 @@ export default function JourneyMap3D({ initialModule }: JourneyMap3DProps) {
   const handleRegionClick = (moduleId: string) => {
     const module = MODULES.find(m => m.id === moduleId);
     if (module && unlockedIds.includes(moduleId)) {
-      setTargetModule(module);
+      // Navigate to module detail page
+      window.location.href = `/module/${moduleId}`;
     }
   };
 
@@ -57,10 +62,18 @@ export default function JourneyMap3D({ initialModule }: JourneyMap3DProps) {
     setTargetModule(null);
   };
 
+  const handleBoundaryHit = (direction: 'north' | 'south' | 'east' | 'west') => {
+    setBoundaryDirection(direction);
+    setTimeout(() => setBoundaryDirection(null), 2000);
+  };
+
   return (
     <div className="w-full h-screen bg-bg-dark relative">
       <ProgressBar />
       <AchievementBadges />
+      <ControlsHint />
+      <MiniMap />
+      <BoundaryIndicator direction={boundaryDirection} />
       
       {/* Glassmorphism card overlay - rendered outside Canvas */}
       {hoveredModule && (() => {
@@ -84,11 +97,12 @@ export default function JourneyMap3D({ initialModule }: JourneyMap3DProps) {
       <ErrorBoundary>
         <Canvas
           camera={{
-            position: [0, 15, config.cameraDistance],
-            fov: 50
+            position: [0, 35, 45],
+            fov: 60
           }}
           gl={{ antialias: true }}
           shadows={config.enableShadows}
+          style={{ background: '#0d1117' }}
         >
           <Suspense fallback={null}>
             <Scene particleCount={config.particleCount} />
@@ -109,11 +123,14 @@ export default function JourneyMap3D({ initialModule }: JourneyMap3DProps) {
             {/* Render path lines between sequential modules */}
             {MODULES.map((module, index) => {
               if (index < MODULES.length - 1) {
+                const nextModule = MODULES[index + 1];
+                const isPathUnlocked = unlockedIds.includes(module.id) && unlockedIds.includes(nextModule.id);
                 return (
                   <PathLine
                     key={`path-${module.id}`}
                     start={module}
-                    end={MODULES[index + 1]}
+                    end={nextModule}
+                    isUnlocked={isPathUnlocked}
                   />
                 );
               }
@@ -122,14 +139,15 @@ export default function JourneyMap3D({ initialModule }: JourneyMap3DProps) {
 
             {/* Render floating icons near each region (limited on mobile) */}
             {MODULES.slice(0, config.iconCount).map((module, index) => {
-              const iconType = index % 3 === 0 ? 'server' : index % 3 === 1 ? 'database' : 'network';
+              const iconTypes: Array<'cloud' | 'code' | 'infrastructure' | 'security'> = ['cloud', 'code', 'infrastructure', 'security'];
+              const iconType = iconTypes[index % iconTypes.length];
               return (
                 <FloatingIcon
                   key={`icon-${module.id}`}
                   position={[
-                    module.position[0] + 1.5,
-                    module.position[1] + 2,
-                    module.position[2]
+                    module.position[0] + 2,
+                    module.position[1] + 3,
+                    module.position[2] + 1
                   ]}
                   type={iconType}
                 />
@@ -143,21 +161,31 @@ export default function JourneyMap3D({ initialModule }: JourneyMap3DProps) {
               onAnimationComplete={handleAnimationComplete}
             />
 
-            {/* Orbit controls */}
-            <OrbitControls
+            {/* Orbit controls with panning boundaries */}
+            <BoundedOrbitControls
               enabled={controlsEnabled}
-              target={[0, 0, 0]}
-              minDistance={10}
-              maxDistance={50}
+              target={[0, 0, -5]}
+              minDistance={20}
+              maxDistance={80}
               minPolarAngle={Math.PI / 6}
-              maxPolarAngle={Math.PI / 2}
-              enablePan={breakpoint !== 'mobile'}
-              panSpeed={0.5}
-              enableDamping={breakpoint === 'desktop'}
-              dampingFactor={0.05}
+              maxPolarAngle={Math.PI / 2.2}
+              enablePan={true}
+              panSpeed={1}
+              enableDamping={true}
+              dampingFactor={0.08}
+              rotateSpeed={0.6}
+              zoomSpeed={0.8}
+              maxPanX={35}
+              maxPanZ={35}
+              onBoundaryHit={handleBoundaryHit}
+              mouseButtons={{
+                LEFT: 0,   // Rotate with left click
+                MIDDLE: 1, // Zoom with middle click
+                RIGHT: 2   // Pan with right click
+              }}
               touches={{
-                ONE: breakpoint === 'mobile' ? 2 : 0,
-                TWO: breakpoint === 'mobile' ? 1 : 2
+                ONE: 2,    // Rotate with one finger
+                TWO: 1     // Zoom/pan with two fingers
               }}
             />
           </Suspense>

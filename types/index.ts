@@ -1,15 +1,35 @@
+export interface Lesson {
+  id: string;
+  title: string;
+  duration: string;
+  description: string;
+  topics: string[];
+}
+
+export interface Challenge {
+  id: string;
+  title: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  description: string;
+  points: number;
+}
+
 export interface Module {
   id: string;
   name: string;
   icon: string;
   description: string;
   position: [number, number, number];
+  region: 'starter' | 'foundation' | 'advanced' | 'mastery';
   type: 'island' | 'peak' | 'forest' | 'valley' | 'realm' | 'metropolis' | 'archipelago' | 'laboratory' | 'summit';
   prerequisites: string[];
+  estimatedTime: string;
   content: {
     title: string;
-    lessons: string[];
-    challenges: string[];
+    overview: string;
+    lessons: Lesson[];
+    challenges: Challenge[];
+    resources: string[];
   };
 }
 
