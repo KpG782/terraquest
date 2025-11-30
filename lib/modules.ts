@@ -54,7 +54,11 @@ export const MODULES: Module[] = [
           points: 100
         }
       ],
-      resources: ['Official Terraform Docs', 'HashiCorp Learn', 'Terraform Registry']
+      resources: [
+        'https://developer.hashicorp.com/terraform/docs',
+        'https://developer.hashicorp.com/terraform/tutorials',
+        'https://registry.terraform.io/'
+      ]
     }
   },
 
@@ -111,7 +115,11 @@ export const MODULES: Module[] = [
           points: 75
         }
       ],
-      resources: ['Provider Documentation', 'State Management Guide', 'Architecture Diagrams']
+      resources: [
+        'https://developer.hashicorp.com/terraform/language/providers',
+        'https://developer.hashicorp.com/terraform/language/state',
+        'https://developer.hashicorp.com/terraform/internals/architecture'
+      ]
     }
   },
 
@@ -168,7 +176,11 @@ export const MODULES: Module[] = [
           points: 125
         }
       ],
-      resources: ['Resource Documentation', 'Data Source Examples', 'HCL Syntax Guide']
+      resources: [
+        'https://developer.hashicorp.com/terraform/language/resources',
+        'https://developer.hashicorp.com/terraform/language/data-sources',
+        'https://developer.hashicorp.com/terraform/language/syntax'
+      ]
     }
   },
 
@@ -225,7 +237,11 @@ export const MODULES: Module[] = [
           points: 175
         }
       ],
-      resources: ['Variable Documentation', 'Type System Guide', 'Validation Examples']
+      resources: [
+        'https://developer.hashicorp.com/terraform/language/values/variables',
+        'https://developer.hashicorp.com/terraform/language/expressions/types',
+        'https://developer.hashicorp.com/terraform/language/values/variables#custom-validation-rules'
+      ]
     }
   },
 
@@ -282,7 +298,11 @@ export const MODULES: Module[] = [
           points: 225
         }
       ],
-      resources: ['Function Reference', 'Expression Documentation', 'Dynamic Block Examples']
+      resources: [
+        'https://developer.hashicorp.com/terraform/language/functions',
+        'https://developer.hashicorp.com/terraform/language/expressions',
+        'https://developer.hashicorp.com/terraform/language/expressions/dynamic-blocks'
+      ]
     }
   },
 
@@ -339,7 +359,11 @@ export const MODULES: Module[] = [
           points: 275
         }
       ],
-      resources: ['Module Registry', 'Module Development Guide', 'Best Practices']
+      resources: [
+        'https://registry.terraform.io/browse/modules',
+        'https://developer.hashicorp.com/terraform/language/modules/develop',
+        'https://developer.hashicorp.com/terraform/language/modules'
+      ]
     }
   },
 
@@ -396,7 +420,11 @@ export const MODULES: Module[] = [
           points: 275
         }
       ],
-      resources: ['Backend Documentation', 'Workspace Guide', 'Environment Patterns']
+      resources: [
+        'https://developer.hashicorp.com/terraform/language/settings/backends/configuration',
+        'https://developer.hashicorp.com/terraform/language/state/workspaces',
+        'https://developer.hashicorp.com/terraform/tutorials/modules/organize-configuration'
+      ]
     }
   },
 
@@ -453,7 +481,11 @@ export const MODULES: Module[] = [
           points: 300
         }
       ],
-      resources: ['Terratest Documentation', 'Sentinel Guide', 'Testing Best Practices']
+      resources: [
+        'https://terratest.gruntwork.io/',
+        'https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement',
+        'https://developer.hashicorp.com/terraform/tutorials/configuration-language/test'
+      ]
     }
   },
 
@@ -510,7 +542,11 @@ export const MODULES: Module[] = [
           points: 375
         }
       ],
-      resources: ['CI/CD Examples', 'GitOps Guide', 'Enterprise Patterns']
+      resources: [
+        'https://developer.hashicorp.com/terraform/tutorials/automation',
+        'https://developer.hashicorp.com/terraform/tutorials/automation/automate-terraform',
+        'https://developer.hashicorp.com/terraform/enterprise'
+      ]
     }
   }
 ];

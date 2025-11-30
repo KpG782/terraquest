@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { detectWebGL } from '@/lib/webgl-detection';
 import { WebGLFallback } from '@/components/WebGLFallback';
 import { Footer } from '@/components/Footer';
+import { HelpOverlay } from '@/components/HelpOverlay';
 
 // Dynamically import 3D components to avoid SSR issues
 const JourneyMap3D = dynamic(() => import('@/components/JourneyMap3D'), {
@@ -34,6 +35,7 @@ export default function Home() {
   return (
     <div className="w-full h-screen bg-bg-dark">
       <JourneyMap3D />
+      <HelpOverlay />
       <Footer />
     </div>
   );

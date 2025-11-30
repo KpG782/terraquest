@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FaGithub, FaLinkedin, FaEnvelope, FaHeart, FaCode } from 'react-icons/fa';
-import { SiTerraform, SiReact, SiNextdotjs, SiThreedotjs } from 'react-icons/si';
+import { FaGithub, FaLinkedin, FaEnvelope, FaCode } from 'react-icons/fa';
 
 export function Footer() {
   const [easterEggClicks, setEasterEggClicks] = useState(0);
@@ -42,15 +41,15 @@ export function Footer() {
                 </p>
                 <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
                   <div className="flex items-center gap-2">
-                    <SiReact className="text-blue-400" />
+                    <span className="text-blue-400">⚛️</span>
                     <span>React Three Fiber</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <SiNextdotjs className="text-white" />
+                    <span className="text-white">▲</span>
                     <span>Next.js 16</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <SiThreedotjs className="text-green-400" />
+                    <span className="text-green-400">🎮</span>
                     <span>Three.js</span>
                   </div>
                 </div>
@@ -94,9 +93,9 @@ export function Footer() {
             <div className="flex items-center gap-2 text-text-secondary text-sm">
               <span>Powered by</span>
               <div className="flex items-center gap-2">
-                <SiReact className="text-blue-400" title="React Three Fiber" />
-                <SiNextdotjs className="text-white" title="Next.js" />
-                <SiThreedotjs className="text-green-400" title="Three.js" />
+                <span className="text-blue-400" title="React Three Fiber">⚛️</span>
+                <span className="text-white" title="Next.js">▲</span>
+                <span className="text-green-400" title="Three.js">🎮</span>
               </div>
             </div>
 
@@ -156,7 +155,23 @@ export function Footer() {
               </a>
             </div>
             <div className="flex items-center gap-4">
-              <span>Open Source Project</span>
+              <a
+                href="https://github.com/KpG782/terraquest/blob/main/JOURNEY_MAP.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-terraform-purple transition-colors"
+              >
+                Journey Map
+              </a>
+              <span>•</span>
+              <a
+                href="https://github.com/KpG782/terraquest/blob/main/NAVIGATION_GUIDE.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-terraform-purple transition-colors"
+              >
+                Navigation Guide
+              </a>
               <span>•</span>
               <a
                 href="https://github.com/KpG782/terraquest"
@@ -164,7 +179,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="hover:text-terraform-purple transition-colors"
               >
-                View on GitHub
+                GitHub
               </a>
               <span>•</span>
               <span>MIT License</span>

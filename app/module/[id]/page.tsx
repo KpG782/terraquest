@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { getModuleById } from '@/lib/modules';
 import { useProgressStore } from '@/lib/store';
 import { ModuleIcon } from '@/components/ModuleIcon';
+import { HelpOverlay } from '@/components/HelpOverlay';
 import { FaClock, FaBook, FaTrophy, FaArrowLeft, FaCheckCircle, FaLock, FaPlay } from 'react-icons/fa';
 
 export default function ModulePage() {
@@ -47,6 +48,7 @@ export default function ModulePage() {
 
   return (
     <div className="min-h-screen bg-bg-dark text-text-primary">
+      <HelpOverlay />
       {/* Header */}
       <div className={`bg-gradient-to-br ${regionColors[module.region]} border-b`}>
         <div className="max-w-6xl mx-auto px-6 py-8">
@@ -108,21 +110,22 @@ export default function ModulePage() {
             {module.content.lessons.map((lesson, index) => (
               <div
                 key={lesson.id}
-                className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-colors"
+                className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-colors cursor-pointer group"
+                onClick={() => router.push(`/module/${module.id}/lesson/${lesson.id}`)}
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-terraform-purple rounded-full flex items-center justify-center text-xl font-bold">
+                  <div className="flex-shrink-0 w-12 h-12 bg-terraform-purple rounded-full flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
                     {index + 1}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-semibold">{lesson.title}</h3>
+                      <h3 className="text-xl font-semibold group-hover:text-terraform-purple transition-colors">{lesson.title}</h3>
                       <span className="text-sm text-text-secondary flex items-center gap-1">
                         <FaClock size={12} /> {lesson.duration}
                       </span>
                     </div>
                     <p className="text-text-secondary mb-3">{lesson.description}</p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2 mb-3">
                       {lesson.topics.map((topic) => (
                         <span
                           key={topic}
@@ -132,6 +135,15 @@ export default function ModulePage() {
                         </span>
                       ))}
                     </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/module/${module.id}/lesson/${lesson.id}`);
+                      }}
+                      className="px-4 py-2 bg-terraform-purple text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center gap-2"
+                    >
+                      <FaBook size={14} /> Start Lesson
+                    </button>
                   </div>
                 </div>
               </div>
@@ -146,10 +158,11 @@ export default function ModulePage() {
             {module.content.challenges.map((challenge) => (
               <div
                 key={challenge.id}
-                className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-colors"
+                className="bg-white/5 border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-colors cursor-pointer group"
+                onClick={() => router.push(`/module/${module.id}/challenge/${challenge.id}`)}
               >
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-lg font-semibold">{challenge.title}</h3>
+                  <h3 className="text-lg font-semibold group-hover:text-terraform-purple transition-colors">{challenge.title}</h3>
                   <span className={`px-2 py-1 rounded text-xs font-semibold border ${difficultyColors[challenge.difficulty]}`}>
                     {challenge.difficulty}
                   </span>
@@ -160,8 +173,14 @@ export default function ModulePage() {
                     <FaTrophy />
                     <span className="font-semibold">{challenge.points} points</span>
                   </div>
-                  <button className="px-4 py-2 bg-terraform-purple text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center gap-2">
-                    <FaPlay size={12} /> Start
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(`/module/${module.id}/challenge/${challenge.id}`);
+                    }}
+                    className="px-4 py-2 bg-terraform-purple text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center gap-2"
+                  >
+                    <FaPlay size={12} /> Start Challenge
                   </button>
                 </div>
               </div>
@@ -174,12 +193,30 @@ export default function ModulePage() {
           <h2 className="text-2xl font-bold mb-6">Resources</h2>
           <div className="bg-white/5 border border-white/10 rounded-lg p-6">
             <ul className="space-y-3">
-              {module.content.resources.map((resource) => (
-                <li key={resource} className="flex items-center gap-3 text-text-secondary">
-                  <span className="text-terraform-purple">→</span>
-                  {resource}
-                </li>
-              ))}
+              {module.content.resources.map((resource) => {
+                const isUrl = resource.startsWith('http://') || resource.startsWith('https://');
+                const displayName = isUrl 
+                  ? resource.replace(/^https?:\/\/(www\.)?/, '').split('/')[0] + ' - ' + resource.split('/').slice(3).join('/')
+                  : resource;
+                
+                return (
+                  <li key={resource} className="flex items-center gap-3">
+                    <span className="text-terraform-purple">→</span>
+                    {isUrl ? (
+                      <a
+                        href={resource}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-400 hover:text-blue-300 hover:underline transition-colors"
+                      >
+                        {displayName}
+                      </a>
+                    ) : (
+                      <span className="text-text-secondary">{resource}</span>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </section>

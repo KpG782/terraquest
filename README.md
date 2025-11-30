@@ -153,6 +153,15 @@ terraquest/
 
 ---
 
+## 📚 Documentation
+
+- **[Links & Documentation](./LINKS_AND_DOCUMENTATION.md)** - 🌟 Complete reference for all links and resources
+- **[Journey Map Guide](./JOURNEY_MAP.md)** - Complete overview of all 9 modules, regions, and learning paths
+- **[Navigation Guide](./NAVIGATION_GUIDE.md)** - Interactive controls, keyboard shortcuts, and tips
+- **[Documentation Index](./DOCUMENTATION_INDEX.md)** - Comprehensive documentation index
+- **[Quick Start Guide](./QUICK_START.md)** - Get up and running in minutes
+- **[Troubleshooting](./TROUBLESHOOTING.md)** - Common issues and solutions
+
 ## 🎮 Usage Guide
 
 ### Navigation
@@ -175,6 +184,8 @@ Progress is automatically saved to `localStorage` and includes:
 - 📍 Current location
 - 🏆 Unlocked achievements
 - 📊 Overall completion percentage
+
+> 💡 **Tip**: Check out the [Navigation Guide](./NAVIGATION_GUIDE.md) for detailed controls and the [Journey Map](./JOURNEY_MAP.md) for a complete module overview!
 
 ---
 
